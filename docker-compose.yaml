@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    environment:
+      ATLASDB_URL: mongodb://mongo:27017/wanderlust
+    volumes:
+      - .:/usr/src/app
+    command: ["npm", "start"]
+
+  mongo:
+    image: mongo:6.0
+    container_name: local-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
